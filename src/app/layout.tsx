@@ -88,7 +88,7 @@ export default function RootLayout({
         {children}
         {/* WhatsApp FAB */}
         <a
-          href="https://wa.me/221000000000"
+          href="https://wa.me/2290190913589"
           target="_blank"
           rel="noopener noreferrer"
           className="wa-fab"

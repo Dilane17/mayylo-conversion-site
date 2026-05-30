@@ -1,9 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { Lock, Clock, Headphones } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { Lock, Clock, Headphones, Loader2 } from "lucide-react";
 
-const WA_HREF = "https://wa.me/221770000000";
+const WA_HREF = "https://wa.me/2290190913589";
 
 const COUNTRIES = [
   { name: "Sénégal", dial: "+221", flag: "🇸🇳" },
@@ -24,65 +27,96 @@ const BESOINS = [
   "Juste me renseigner",
 ];
 
-type FormData = {
-  entreprise: string;
-  responsable: string;
-  pays: string;
-  whatsapp: string;
-  taille: string;
-  besoin: string;
-};
+const SOURCES = [
+  "Facebook",
+  "Instagram",
+  "WhatsApp",
+  "LinkedIn",
+  "Recommandation",
+  "Prospection terrain",
+  "Google",
+  "Autre",
+];
 
-type Lead = FormData & { whatsappFull: string };
+// Zod validation schema
+const formSchema = z.object({
+  entreprise: z.string().min(1, "Indiquez le nom de votre entreprise."),
+  responsable: z.string().min(1, "Indiquez votre nom."),
+  pays: z.string().min(1, "Sélectionnez un pays."),
+  whatsapp: z.string().min(6, "Entrez un numéro WhatsApp valide."),
+  email: z.string().email("Email invalide").optional().or(z.literal("")),
+  taille: z.string().min(1, "Sélectionnez la taille de votre équipe."),
+  besoin: z.string().min(1, "Sélectionnez votre besoin principal."),
+  source: z.string().min(1, "Indiquez comment vous avez connu Mayylo."),
+});
+
+type FormData = z.infer<typeof formSchema>;
 
 export function FormSection() {
-  const [form, setForm] = useState<FormData>({
-    entreprise: "",
-    responsable: "",
-    pays: "Sénégal",
-    whatsapp: "",
-    taille: "",
-    besoin: "",
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [isSuccess, setIsSuccess] = useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    watch,
+    reset,
+    formState: { errors },
+  } = useForm<FormData>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      pays: "Bénin",
+      entreprise: "",
+      responsable: "",
+      whatsapp: "",
+      email: "",
+      taille: "",
+      besoin: "",
+      source: "",
+    },
   });
-  const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>(
-    {},
-  );
-  const [submitted, setSubmitted] = useState<Lead | null>(null);
 
-  const country = COUNTRIES.find((c) => c.name === form.pays) ?? COUNTRIES[0];
+  const selectedPays = watch("pays");
+  const country =
+    COUNTRIES.find((c) => c.name === selectedPays) ?? COUNTRIES[3]; // Default to Bénin
 
-  const set = (k: keyof FormData, v: string) => {
-    setForm((f) => ({ ...f, [k]: v }));
-    setErrors((e) => {
-      const n = { ...e };
-      delete n[k];
-      return n;
-    });
+  const onSubmit = async (data: FormData) => {
+    setIsSubmitting(true);
+    setSubmitError(null);
+
+    try {
+      const response = await fetch("/api/leads", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...data,
+          whatsapp: country.dial + " " + data.whatsapp.trim(),
+        }),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok || !result.success) {
+        throw new Error(result.message || "Erreur lors de l'enregistrement");
+      }
+
+      setIsSuccess(true);
+      reset();
+    } catch (error) {
+      setSubmitError(
+        error instanceof Error
+          ? error.message
+          : "Une erreur est survenue. Veuillez réessayer.",
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
-  const validate = () => {
-    const e: Partial<Record<keyof FormData, string>> = {};
-    if (!form.entreprise.trim())
-      e.entreprise = "Indiquez le nom de votre entreprise.";
-    if (!form.responsable.trim()) e.responsable = "Indiquez votre nom.";
-    if (form.whatsapp.replace(/\D/g, "").length < 6)
-      e.whatsapp = "Entrez un numéro WhatsApp valide.";
-    return e;
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const errs = validate();
-    setErrors(errs);
-    if (Object.keys(errs).length) return;
-    setSubmitted({
-      ...form,
-      whatsappFull: country.dial + " " + form.whatsapp.trim(),
-    });
-  };
-
-  if (submitted) {
-    const firstName = submitted.responsable.split(" ")[0];
+  if (isSuccess) {
     return (
       <section id="formulaire" className="section cap-form-section">
         <div className="container-main">
@@ -111,29 +145,11 @@ export function FormSection() {
                     <path d="M5 12l4 4 10-10" />
                   </svg>
                 </div>
-                <h3>C&apos;est noté, {firstName}&nbsp;!</h3>
+                <h3>Merci pour votre inscription&nbsp;!</h3>
                 <p>
-                  Notre équipe vous recontacte très vite sur WhatsApp pour créer
-                  les e-mails de{" "}
-                  <strong style={{ color: "var(--ink)" }}>
-                    {submitted.entreprise}
-                  </strong>
-                  .
+                  Votre entreprise a bien été préinscrite. Nous vous
+                  contacterons avant le lancement officiel de Mayylo.
                 </p>
-                <div className="recap">
-                  <div className="r">
-                    <span className="k">Entreprise</span>
-                    <span className="v">{submitted.entreprise}</span>
-                  </div>
-                  <div className="r">
-                    <span className="k">WhatsApp</span>
-                    <span className="v">{submitted.whatsappFull}</span>
-                  </div>
-                  <div className="r">
-                    <span className="k">Pays</span>
-                    <span className="v">{submitted.pays}</span>
-                  </div>
-                </div>
                 <div className="acts">
                   <a
                     href={WA_HREF}
@@ -154,7 +170,7 @@ export function FormSection() {
                       <path d="M3 21l1.7-5.1A8 8 0 1 1 9 19.4L3 21z" />
                       <path d="M8 11.5c.4 1.4 1.5 2.6 3 3.1l1-1 2 1c0 .8-.6 1.4-1.5 1.4-3 0-5.5-2.5-5.5-5.5C7 9.6 7.6 9 8.4 9l1 2-1 .5z" />
                     </svg>
-                    Discuter maintenant
+                    Discuter sur WhatsApp
                   </a>
                 </div>
               </div>
@@ -226,7 +242,23 @@ export function FormSection() {
               <p>Moins d&apos;une minute. Aucune carte bancaire.</p>
             </div>
 
-            <form onSubmit={handleSubmit} noValidate>
+            {submitError && (
+              <div
+                style={{
+                  padding: "12px 16px",
+                  background: "#FEE2E2",
+                  border: "1px solid #EF4444",
+                  borderRadius: "8px",
+                  color: "#DC2626",
+                  fontSize: "13px",
+                  marginBottom: "16px",
+                }}
+              >
+                {submitError}
+              </div>
+            )}
+
+            <form onSubmit={handleSubmit(onSubmit)} noValidate>
               <div className={`field ${errors.entreprise ? "err" : ""}`}>
                 <label>
                   Nom de l&apos;entreprise <span className="req">*</span>
@@ -234,11 +266,10 @@ export function FormSection() {
                 <input
                   type="text"
                   placeholder="Kër Consulting"
-                  value={form.entreprise}
-                  onChange={(e) => set("entreprise", e.target.value)}
+                  {...register("entreprise")}
                 />
                 {errors.entreprise && (
-                  <div className="err-msg">{errors.entreprise}</div>
+                  <div className="err-msg">{errors.entreprise.message}</div>
                 )}
               </div>
 
@@ -249,21 +280,34 @@ export function FormSection() {
                 <input
                   type="text"
                   placeholder="Aminata Sow"
-                  value={form.responsable}
-                  onChange={(e) => set("responsable", e.target.value)}
+                  {...register("responsable")}
                 />
                 {errors.responsable && (
-                  <div className="err-msg">{errors.responsable}</div>
+                  <div className="err-msg">{errors.responsable.message}</div>
+                )}
+              </div>
+
+              <div className={`field ${errors.email ? "err" : ""}`}>
+                <label>
+                  Email <span className="opt">(optionnel)</span>
+                </label>
+                <input
+                  type="email"
+                  placeholder="contact@entreprise.com"
+                  {...register("email")}
+                />
+                {errors.email && (
+                  <div className="err-msg">{errors.email.message}</div>
                 )}
               </div>
 
               <div className="cap-field-row">
-                <div className="field">
+                <div className={`field ${errors.pays ? "err" : ""}`}>
                   <label>
                     Pays <span className="req">*</span>
                   </label>
                   <select
-                    value={form.pays}
+                    {...register("pays")}
                     onChange={(e) => set("pays", e.target.value)}
                   >
                     {COUNTRIES.map((c) => (
@@ -273,17 +317,19 @@ export function FormSection() {
                     ))}
                   </select>
                 </div>
-                <div className="field">
-                  <label>Taille de l&apos;équipe</label>
-                  <select
-                    value={form.taille}
-                    onChange={(e) => set("taille", e.target.value)}
-                  >
+                <div className={`field ${errors.taille ? "err" : ""}`}>
+                  <label>
+                    Taille de l&apos;équipe <span className="req">*</span>
+                  </label>
+                  <select {...register("taille")}>
                     <option value="">Choisir…</option>
                     <option>1 à 4 personnes</option>
                     <option>5 à 19 personnes</option>
                     <option>20 personnes ou plus</option>
                   </select>
+                  {errors.taille && (
+                    <div className="err-msg">{errors.taille.message}</div>
+                  )}
                 </div>
               </div>
 
@@ -302,30 +348,55 @@ export function FormSection() {
                     type="tel"
                     placeholder="77 123 45 67"
                     inputMode="tel"
-                    value={form.whatsapp}
-                    onChange={(e) => set("whatsapp", e.target.value)}
+                    {...register("whatsapp")}
                   />
                 </div>
                 {errors.whatsapp && (
-                  <div className="err-msg">{errors.whatsapp}</div>
+                  <div className="err-msg">{errors.whatsapp.message}</div>
                 )}
               </div>
 
-              <div className="field">
-                <label>Votre besoin principal</label>
+              <div className={`field ${errors.besoin ? "err" : ""}`}>
+                <label>
+                  Votre besoin principal <span className="req">*</span>
+                </label>
                 <div className="cap-chips">
                   {BESOINS.map((b) => (
                     <button
                       key={b}
                       type="button"
-                      className={`cap-chip ${form.besoin === b ? "on" : ""}`}
-                      onClick={() => set("besoin", b)}
+                      className={`cap-chip ${watch("besoin") === b ? "on" : ""}`}
+                      onClick={() => {
+                        const event = { target: { value: b, name: "besoin" } };
+                        register("besoin").onChange(event as any);
+                      }}
                     >
                       <span className="rad"></span>
                       {b}
                     </button>
                   ))}
                 </div>
+                {errors.besoin && (
+                  <div className="err-msg">{errors.besoin.message}</div>
+                )}
+              </div>
+
+              <div className={`field ${errors.source ? "err" : ""}`}>
+                <label>
+                  Comment avez-vous entendu parler de Mayylo ?{" "}
+                  <span className="req">*</span>
+                </label>
+                <select {...register("source")}>
+                  <option value="">Sélectionnez une option…</option>
+                  {SOURCES.map((s) => (
+                    <option key={s} value={s}>
+                      {s}
+                    </option>
+                  ))}
+                </select>
+                {errors.source && (
+                  <div className="err-msg">{errors.source.message}</div>
+                )}
               </div>
 
               {/* Scarcity + Promise */}
@@ -362,7 +433,7 @@ export function FormSection() {
                     Offre de lancement :
                   </strong>{" "}
                   <span style={{ color: "var(--ink)" }}>
-                    50% de réduction à vie pour les 100 premiers inscrits
+                    1 mois d'essaie gratuit pour tous les nouveaux inscrits
                   </span>
                 </div>
               </div>
@@ -370,28 +441,38 @@ export function FormSection() {
               <button
                 type="submit"
                 className="btn btn-primary btn-lg cap-submit"
+                disabled={isSubmitting}
               >
-                Réserver mon accès prioritaire
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.6"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M5 12h14M13 6l6 6-6 6" />
-                </svg>
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    Envoi en cours...
+                  </>
+                ) : (
+                  <>
+                    Rejoindre la liste d&apos;attente
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.6"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M5 12h14M13 6l6 6-6 6" />
+                    </svg>
+                  </>
+                )}
               </button>
 
               <p className="cap-form-note">
                 <span className="ic">
                   <Lock className="w-3.5 h-3.5" />
                 </span>
-                En envoyant ce formulaire, vous acceptez d&apos;être recontacté
-                par l&apos;équipe Mayylo. Vos coordonnées ne sont jamais
+                En vous inscrivant, vous rejoignez la liste d&apos;attente et
+                serez informé du lancement. Vos coordonnées ne sont jamais
                 partagées.
               </p>
             </form>

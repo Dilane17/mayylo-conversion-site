@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-const WA_HREF = "https://wa.me/221770000000";
+const WA_HREF = "https://wa.me/2290190913589";
 
 export function FooterSection() {
   const year = new Date().getFullYear();
@@ -18,15 +18,19 @@ export function FooterSection() {
             />
           </a>
           <div className="links">
-            <a href={WA_HREF} target="_blank" rel="noopener noreferrer">WhatsApp</a>
-            <a href="mailto:contact@mayylo.sn">contact@mayylo.sn</a>
-            <a href="#formulaire">Être recontacté</a>
+            <a href={WA_HREF} target="_blank" rel="noopener noreferrer">
+              WhatsApp
+            </a>
+            <a href="mailto:contact@mayylo.com">contact@mayylo.com</a>
+            <a href="#formulaire">Rejoindre la liste d&apos;attente</a>
             <a href="#">Confidentialité</a>
           </div>
         </div>
         <div className="copy">
-          <span>© {year} Mayylo — E-mail professionnel pour les PME africaines.</span>
-          <span>Dakar, Sénégal</span>
+          <span>
+            © {year} Mayylo — E-mail professionnel pour les PME africaines.
+          </span>
+          <span>Cotonou, Bénin — Afrique francophone</span>
         </div>
       </div>
     </footer>

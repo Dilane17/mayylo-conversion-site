@@ -37,7 +37,7 @@ export function HeroSection() {
         <div className="cap-hero-grid">
           {/* Left column */}
           <div>
-            {/* Scarcity badge */}
+            {/* Pre-launch badge */}
             <span
               className="hero-badge"
               style={{
@@ -49,10 +49,10 @@ export function HeroSection() {
                 className="chip"
                 style={{ background: "#02F5A1", color: "#07191E" }}
               >
-                🔥
+                �
               </span>
               <span style={{ color: "#00C97F", fontWeight: 600 }}>
-                Plus que 47 accès prioritaires
+                Bientôt disponible — Inscrivez-vous dès maintenant
               </span>
             </span>
 
@@ -77,7 +77,10 @@ export function HeroSection() {
               >
                 <path d="M12 2l3 6 6 1-4 4 1 6-6-3-6 3 1-6-4-4 6-1z" />
               </svg>
-              <span>Conçu par des ingénieurs ex-Google, Orange & AWS</span>
+              <span>
+                Une initiative de HustlerLabs pour simplifier l&apos;accès aux
+                e-mails professionnels pour les PME africaines.
+              </span>
             </div>
 
             <h1 className="h-display">
@@ -110,7 +113,11 @@ export function HeroSection() {
                 <path d="M12 15l-4-4 4-4M8 11h8" />
                 <circle cx="12" cy="12" r="10" />
               </svg>
-              <span>Accès bêta fermée — sur invitation uniquement</span>
+              <span>
+                Mayylo est actuellement en préparation. Les entreprises
+                préinscrites seront les premières informées du lancement
+                officiel.
+              </span>
             </div>
 
             <p className="h-lead" style={{ marginTop: 20 }}>
@@ -123,7 +130,7 @@ export function HeroSection() {
 
             <div className="cap-hero-cta">
               <button className="btn btn-green btn-lg" onClick={scrollToForm}>
-                Être recontacté
+                Rejoindre la liste d&apos;attente
                 <svg
                   width="16"
                   height="16"
@@ -138,7 +145,7 @@ export function HeroSection() {
                 </svg>
               </button>
               <a
-                href="https://wa.me/221770000000"
+                href="https://wa.me/2290190913589"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn btn-ghost btn-lg"
@@ -200,6 +207,120 @@ export function HeroSection() {
                 30 jours satisfait ou remboursé
               </span>
             </div>
+
+            {/* Reassurance block for pre-registered companies */}
+            <div
+              style={{
+                marginTop: 28,
+                padding: 20,
+                borderRadius: 14,
+                background: "var(--bg-soft)",
+                border: "1px solid var(--line)",
+              }}
+            >
+              <h4
+                style={{
+                  fontSize: 13,
+                  fontWeight: 600,
+                  color: "var(--ink)",
+                  marginBottom: 12,
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 8,
+                }}
+              >
+                <span style={{ fontSize: 16 }}>✨</span>
+                Les entreprises préinscrites bénéficieront :
+              </h4>
+              <ul
+                style={{
+                  listStyle: "none",
+                  padding: 0,
+                  margin: 0,
+                  display: "grid",
+                  gap: 8,
+                }}
+              >
+                <li
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 8,
+                    fontSize: 12,
+                    color: "var(--ink-mid)",
+                  }}
+                >
+                  <span
+                    style={{
+                      width: 18,
+                      height: 18,
+                      borderRadius: "50%",
+                      background: "#E6FEF3",
+                      color: "#00C97F",
+                      display: "grid",
+                      placeItems: "center",
+                      fontSize: 10,
+                      fontWeight: 700,
+                    }}
+                  >
+                    ✓
+                  </span>
+                  d&apos;un accès anticipé
+                </li>
+                <li
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 8,
+                    fontSize: 12,
+                    color: "var(--ink-mid)",
+                  }}
+                >
+                  <span
+                    style={{
+                      width: 18,
+                      height: 18,
+                      borderRadius: "50%",
+                      background: "#E6FEF3",
+                      color: "#00C97F",
+                      display: "grid",
+                      placeItems: "center",
+                      fontSize: 10,
+                      fontWeight: 700,
+                    }}
+                  >
+                    ✓
+                  </span>
+                  des tarifs de lancement
+                </li>
+                <li
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 8,
+                    fontSize: 12,
+                    color: "var(--ink-mid)",
+                  }}
+                >
+                  <span
+                    style={{
+                      width: 18,
+                      height: 18,
+                      borderRadius: "50%",
+                      background: "#E6FEF3",
+                      color: "#00C97F",
+                      display: "grid",
+                      placeItems: "center",
+                      fontSize: 10,
+                      fontWeight: 700,
+                    }}
+                  >
+                    ✓
+                  </span>
+                  d&apos;un accompagnement prioritaire
+                </li>
+              </ul>
+            </div>
           </div>
 
           {/* Right column — Mockup */}
@@ -212,7 +333,7 @@ export function HeroSection() {
                   <span></span>
                 </div>
               </div>
-              <div className="url">mail.votresociete.sn</div>
+              <div className="url">mail.votresociete.com</div>
               <div style={{ width: 32 }} />
             </div>
 
@@ -240,7 +361,7 @@ export function HeroSection() {
                   </div>
                   <div>
                     <div className="from">Aïssa · Direction</div>
-                    <div className="subj">contact@votresociete.sn</div>
+                    <div className="subj">contact@votresociete.com</div>
                   </div>
                   <div style={{ display: "grid", justifyItems: "end", gap: 4 }}>
                     <span className="badge">Pro</span>
@@ -253,7 +374,7 @@ export function HeroSection() {
                   </div>
                   <div>
                     <div className="from">Ousmane · Ventes</div>
-                    <div className="subj">commercial@votresociete.sn</div>
+                    <div className="subj">commercial@votresociete.com</div>
                   </div>
                   <div style={{ display: "grid", justifyItems: "end", gap: 4 }}>
                     <span className="time">09:21</span>
@@ -265,7 +386,7 @@ export function HeroSection() {
                   </div>
                   <div>
                     <div className="from">Mariam · Support</div>
-                    <div className="subj">support@votresociete.sn</div>
+                    <div className="subj">support@votresociete.com</div>
                   </div>
                   <div style={{ display: "grid", justifyItems: "end", gap: 4 }}>
                     <span className="time">Hier</span>

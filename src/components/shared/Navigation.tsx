@@ -67,7 +67,7 @@ export function Navigation() {
           {/* CTA Button */}
           <div className="hidden md:block">
             <Button size="sm" onClick={scrollToForm}>
-              Être recontacté
+              Rejoindre la liste d'attente
             </Button>
           </div>
 
@@ -101,7 +101,7 @@ export function Navigation() {
               ))}
               <div className="px-2 pt-2">
                 <Button className="w-full" onClick={scrollToForm}>
-                  Être recontacté
+                  Rejoindre la liste d'attente
                 </Button>
               </div>
             </div>
