@@ -44,11 +44,32 @@ export const metadata: Metadata = {
   title: "Mayylo — E-mails professionnels en quelques minutes | Mobile Money",
   description:
     "Votre entreprise mérite mieux qu'une adresse Gmail. Créez les e-mails professionnels de votre équipe en quelques minutes. Paiement Mobile Money, support WhatsApp en français. Laissez vos coordonnées, on vous recontacte.",
+  icons: {
+    icon: [{ url: "/logo/logo%20officiel%20Maylo.png", type: "image/png" }],
+    apple: [{ url: "/logo/logo%20officiel%20Maylo.png", type: "image/png" }],
+  },
   openGraph: {
     title: "Mayylo — E-mails professionnels en quelques minutes",
     description:
       "Votre entreprise mérite mieux qu'une adresse Gmail. Créez les e-mails professionnels de votre équipe en quelques minutes.",
     type: "website",
+    locale: "fr_FR",
+    siteName: "Mayylo",
+    images: [
+      {
+        url: "/logo/logo%20officiel%20Maylo%20fond%20blanc.png",
+        width: 1200,
+        height: 630,
+        alt: "Mayylo - E-mails professionnels pour les PME africaines",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Mayylo — E-mails professionnels en quelques minutes",
+    description:
+      "Votre entreprise mérite mieux qu'une adresse Gmail. Créez les e-mails professionnels de votre équipe en quelques minutes.",
+    images: ["/logo/logo%20officiel%20Maylo%20fond%20blanc.png"],
   },
 };
 
