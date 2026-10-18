@@ -1,3 +1,11 @@
+# Mayylo — Landing page de conversion
+
+Landing page de conversion pour Mayylo, service d'e-mails professionnels destiné aux PME d'Afrique francophone (Next.js).
+
+📖 Étude de cas détaillée : [Mayylo sur dylan-dev.me](https://www.dylan-dev.me/projects/mayylo) — par [Clovis Ahouandjinou](https://www.dylan-dev.me), développeur front-end freelance.
+
+---
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
