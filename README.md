@@ -4,6 +4,8 @@ Landing page de conversion pour Mayylo, service d'e-mails professionnels destin�
 
 📖 Étude de cas détaillée : [Mayylo sur dylan-dev.me](https://www.dylan-dev.me/projects/mayylo) — par [Clovis Ahouandjinou](https://www.dylan-dev.me), développeur front-end freelance.
 
+💼 Besoin d'un site similaire ? [Développeur Next.js freelance](https://www.dylan-dev.me/services/developpeur-nextjs-freelance-europe-afrique) · [Création de site vitrine et landing page](https://www.dylan-dev.me/services/creation-site-vitrine-landing-page-freelance) · [Blog](https://www.dylan-dev.me/blog)
+
 ---
 
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
